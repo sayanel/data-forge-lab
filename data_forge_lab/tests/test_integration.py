@@ -8,7 +8,7 @@ from domain.models.habit import Habit
 from domain.models.event import HabitEvent
 from domain.services.habit_service import HabitService
 from domain.services.person_service import PersonService
-from domain.services.event_service import HabitEventService
+from domain.services.habit_event_service import HabitEventService
 from infrastructure.persistence.in_memory import HabitRepositoryImpl, HabitEventRepositoryImpl, PersonRepositoryImpl
 
 
@@ -23,7 +23,7 @@ class TestIntegration(unittest.TestCase):
         # Initialize services
         self.person_service = PersonService(self.person_repository)
         self.habit_service = HabitService(self.habit_repository)
-        self.event_service = HabitEventService(self.event_repository)
+        self.habit_event_service = HabitEventService(self.event_repository)
 
         # Create test data
         self.persons = [
@@ -71,7 +71,7 @@ class TestIntegration(unittest.TestCase):
 
         # Save habit events to the repository
         for event in self.habit_events:
-            self.event_service.log_event(
+            self.habit_event_service.log_event(
                 person_id=event.person_id,
                 habit_id=event.habit_id,
                 notes=event.notes

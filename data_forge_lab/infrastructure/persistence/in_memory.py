@@ -6,7 +6,7 @@ from domain.models.habit import Habit
 from domain.models.event import HabitEvent
 
 from interfaces.repositories.person_repository import PersonRepository
-from interfaces.repositories.event_repository import HabitEventRepository
+from interfaces.repositories.habit_event_repository import HabitEventRepository
 from interfaces.repositories.habit_repository import HabitRepository
 
 
@@ -40,10 +40,10 @@ class HabitEventRepositoryImpl(HabitEventRepository):
     def __init__(self):
         self.storage = {}
 
-    def save(self, event: HabitEvent) -> HabitEvent:
-        self.storage[event.event_id] = event
+    def save(self, habit_event: HabitEvent) -> HabitEvent:
+        self.storage[habit_event.event_id] = habit_event
         print(f"self.storage: {self.storage}")
-        return event
+        return habit_event
 
     def get_by_id(self, event_id: UUID) -> Optional[HabitEvent]:
         return self.storage.get(event_id)
