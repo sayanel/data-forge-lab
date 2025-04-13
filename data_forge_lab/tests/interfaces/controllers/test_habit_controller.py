@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 from flask import Flask
 
 from interfaces.controllers.habit_controller import HabitController, init_habit_controller
-from infrastructure.persistence.in_memory import HabitRepositoryImpl, HabitEventRepositoryImpl
+from infrastructure.persistence.in_memory import InMemoryHabitRepository, InMemoryHabitEventRepository
 
 
 class TestHabitController(unittest.TestCase):
@@ -13,8 +13,8 @@ class TestHabitController(unittest.TestCase):
         self.app = Flask(__name__)
 
         # Initialize repositories
-        self.habit_repo = HabitRepositoryImpl()
-        self.event_repo = HabitEventRepositoryImpl()
+        self.habit_repo = InMemoryHabitRepository()
+        self.event_repo = InMemoryHabitEventRepository()
 
         # Initialize the habit controller
         self.habit_controller = init_habit_controller(self.habit_repo)

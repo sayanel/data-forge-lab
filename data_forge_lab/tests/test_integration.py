@@ -9,16 +9,16 @@ from domain.models.event import HabitEvent
 from domain.services.habit_service import HabitService
 from domain.services.person_service import PersonService
 from domain.services.habit_event_service import HabitEventService
-from infrastructure.persistence.in_memory import HabitRepositoryImpl, HabitEventRepositoryImpl, PersonRepositoryImpl
+from infrastructure.persistence.in_memory import InMemoryHabitRepository, InMemoryHabitEventRepository, InMemoryPersonRepository
 
 
 class TestIntegration(unittest.TestCase):
 
     def setUp(self):
         # Initialize in-memory repositories
-        self.person_repository = PersonRepositoryImpl()
-        self.habit_repository = HabitRepositoryImpl()
-        self.event_repository = HabitEventRepositoryImpl()
+        self.person_repository = InMemoryPersonRepository()
+        self.habit_repository = InMemoryHabitRepository()
+        self.event_repository = InMemoryHabitEventRepository()
 
         # Initialize services
         self.person_service = PersonService(self.person_repository)

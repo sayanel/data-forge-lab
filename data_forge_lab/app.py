@@ -4,13 +4,11 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask_cors import CORS
 
+from containers import RepositoryContainer
+
 from interfaces.controllers.habit_controller import init_habit_controller
 from interfaces.controllers.person_controller import init_person_controller
 from interfaces.controllers.habit_event_controller import init_habit_event_controller
-
-from infrastructure.persistence.in_memory import HabitRepositoryImpl
-from infrastructure.persistence.in_memory import PersonRepositoryImpl
-from infrastructure.persistence.in_memory import HabitEventRepositoryImpl
 
 
 def init_logger():
@@ -50,19 +48,20 @@ def create_app():
     # CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-    # Initialize repositories
-    habit_repo = HabitRepositoryImpl()
-    person_repo = PersonRepositoryImpl()
-    habit_event_repo = HabitEventRepositoryImpl()
+    # Initialize the container and repositories
+    container = RepositoryContainer()
+    person_repo = container.person_repo()
+    habit_repo = container.habit_repo()
+    habit_event_repo = container.habit_event_repo()
 
     # Initialize controllers with the repositories
-    habit_controller = init_habit_controller(habit_repo)
     person_controller = init_person_controller(person_repo)
+    habit_controller = init_habit_controller(habit_repo)
     habit_event_controller = init_habit_event_controller(habit_event_repo)
 
     # Register blueprints
-    app.register_blueprint(habit_controller.habit_blueprint, url_prefix='/api')
     app.register_blueprint(person_controller.person_blueprint, url_prefix='/api')
+    app.register_blueprint(habit_controller.habit_blueprint, url_prefix='/api')
     app.register_blueprint(habit_event_controller.habit_event_blueprint, url_prefix='/api')
 
     return app

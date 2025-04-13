@@ -3,14 +3,14 @@ from datetime import date
 from uuid import uuid4
 from domain.services.person_service import PersonService
 from domain.models.person import Person
-from infrastructure.persistence.in_memory import PersonRepositoryImpl
+from infrastructure.persistence.in_memory import InMemoryPersonRepository
 
 
 class TestPersonService(unittest.TestCase):
 
     def setUp(self):
         # Initialize the in-memory repository
-        self.person_repo = PersonRepositoryImpl()
+        self.person_repo = InMemoryPersonRepository()
         self.person_service = PersonService(self.person_repo)
 
     def test_create_person_with_id(self):

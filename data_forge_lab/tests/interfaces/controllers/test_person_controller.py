@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from flask import Flask
 from interfaces.controllers.person_controller import PersonController, init_person_controller
-from infrastructure.persistence.in_memory import PersonRepositoryImpl
+from infrastructure.persistence.in_memory import InMemoryPersonRepository
 
 
 class TestPersonController(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestPersonController(unittest.TestCase):
         self.app = Flask(__name__)
 
         # Initialize repository
-        self.person_repo = PersonRepositoryImpl()
+        self.person_repo = InMemoryPersonRepository()
 
         # Initialize the person controller
         self.person_controller = init_person_controller(self.person_repo)

@@ -13,7 +13,7 @@ from interfaces.repositories.habit_repository import HabitRepository
 Database = None
 
 
-class PersonRepositoryImpl(PersonRepository):
+class InMemoryPersonRepository(PersonRepository):
     def __init__(self):
         self.storage = {}
 
@@ -36,7 +36,7 @@ class PersonRepositoryImpl(PersonRepository):
         return False
 
 
-class HabitEventRepositoryImpl(HabitEventRepository):
+class InMemoryHabitEventRepository(HabitEventRepository):
     def __init__(self):
         self.storage = {}
 
@@ -61,7 +61,7 @@ class HabitEventRepositoryImpl(HabitEventRepository):
         return False
 
 
-class HabitRepositoryImpl(HabitRepository):
+class InMemoryHabitRepository(HabitRepository):
     def __init__(self):
         self.storage = {}
 
