@@ -9,7 +9,11 @@ class PersonService:
     def __init__(self, person_repo: PersonRepository):
         self.person_repo = person_repo
 
-    def create_person(self, first_name: str, last_name: str, date_of_birth: date, email: str, phone_number: str, address: str, person_id: Optional[UUID] = uuid4, gender: Optional[str] = None, notification_preferences: Optional[dict] = None, language_preference: str = "English") -> Person:
+    def create_person(self, first_name: str, last_name: str, date_of_birth: date, email: str, phone_number: str, address: str, person_id: Optional[UUID] = None, gender: Optional[str] = None, notification_preferences: Optional[dict] = None, language_preference: str = "English") -> Person:
+        if not person_id:
+            person_id = uuid4()
+
+        print(f"date_of_birth: {date_of_birth} - {type(date_of_birth)}")
         person = Person(
             first_name=first_name,
             last_name=last_name,
@@ -28,6 +32,7 @@ class PersonService:
         person = self.person_repo.get_by_id(person_id)
         if not person:
             return None
+
         person.update_details(**kwargs)
         return self.person_repo.save(person)
 

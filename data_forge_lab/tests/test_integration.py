@@ -71,7 +71,7 @@ class TestIntegration(unittest.TestCase):
 
         # Save habit events to the repository
         for event in self.habit_events:
-            self.habit_event_service.log_event(
+            self.habit_event_service.create_habit_event(
                 person_id=event.person_id,
                 habit_id=event.habit_id,
                 notes=event.notes

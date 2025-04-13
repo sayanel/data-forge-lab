@@ -24,3 +24,13 @@ class HabitEvent:
     def update_notes(self, new_notes: str):
         """Update the notes for the habit event."""
         self.notes = new_notes
+
+    def to_dict(self):
+        return {
+            "event_id": str(self.event_id),
+            "person_id": str(self.person_id),
+            "habit_id": str(self.habit_id),
+            "timestamp": self.timestamp.isoformat(),
+            "notes": self.notes,
+            "status": self.status
+        }

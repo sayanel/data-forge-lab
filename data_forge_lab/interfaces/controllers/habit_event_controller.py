@@ -28,20 +28,20 @@ class HabitEventController:
             habit_id=UUID(data['habit_id']),
             notes=data['notes']
         )
-        return jsonify(event), 201
+        return jsonify(event.to_dict()), 201
 
     def get_habit_event(self, event_id):
         event = self.habit_event_use_cases.get_habit_event(event_id)
         if not event:
             return jsonify({"error": "Habit event not found"}), 404
-        return jsonify(event), 200
+        return jsonify(event.to_dict()), 200
 
     def update_habit_event(self, event_id):
         data = request.get_json()
         event = self.habit_event_use_cases.update_habit_event(event_id, **data)
         if not event:
             return jsonify({"error": "Habit event not found"}), 404
-        return jsonify(event), 200
+        return jsonify(event.to_dict()), 200
 
     def delete_habit_event(self, event_id):
         success = self.habit_event_use_cases.delete_habit_event(event_id)
@@ -51,7 +51,8 @@ class HabitEventController:
 
     def list_habit_events(self, habit_id):
         events = self.habit_event_use_cases.list_habit_events(habit_id)
-        return jsonify(events), 200
+        events_dict = list(map(lambda event: event.to_dict(), events))
+        return jsonify(events_dict), 200
 
 
 # Initialize the controller with dependencies

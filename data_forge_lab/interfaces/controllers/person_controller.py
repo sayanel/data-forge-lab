@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from uuid import UUID
 from flask import Blueprint, request, jsonify
 from application.use_cases.person_use_cases import PersonUseCases
@@ -21,33 +22,47 @@ class PersonController:
         self.person_blueprint.route('/persons', methods=['GET'])(self.list_persons)
 
     def create_person(self):
-        logger.info("create person")
+        created_persons = []
         data = request.get_json()
-        person = self.person_use_cases.create_person(
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            date_of_birth=data['date_of_birth'],
-            email=data['email'],
-            phone_number=data['phone_number'],
-            address=data['address'],
-            gender=data.get('gender'),
-            notification_preferences=data.get('notification_preferences'),
-            language_preference=data.get('language_preference', "English")
-        )
-        return jsonify(person), 201
+
+        for person_to_create in data:
+            try:
+                logger.info(f"create person: {person_to_create}")
+
+                date_of_birth = datetime.strptime(person_to_create['date_of_birth'], '%Y-%m-%d').date()
+
+                person = self.person_use_cases.create_person(
+                    first_name=person_to_create['first_name'],
+                    last_name=person_to_create['last_name'],
+                    date_of_birth=date_of_birth,
+                    email=person_to_create['email'],
+                    phone_number=person_to_create['phone_number'],
+                    address=person_to_create['address'],
+                    gender=person_to_create.get('gender'),
+                    notification_preferences=person_to_create.get('notification_preferences'),
+                    language_preference=person_to_create.get('language_preference', "English")
+                )
+                created_persons.append(person.to_dict())
+            except Exception as e:
+                logger.error(f"Error creating person: {e}")
+                return jsonify({"error": f"Failed to create person: {person_to_create}", "details": str(e)}), 500
+
+        return jsonify(created_persons), 201
 
     def get_person(self, person_id):
         person = self.person_use_cases.get_person(person_id)
         if not person:
             return jsonify({"error": "Person not found"}), 404
-        return jsonify(person), 200
+
+        return jsonify(person.to_dict()), 200
 
     def update_person(self, person_id):
         data = request.get_json()
         person = self.person_use_cases.update_person(person_id, **data)
         if not person:
             return jsonify({"error": "Person not found"}), 404
-        return jsonify(person), 200
+
+        return jsonify(person.to_dict()), 200
 
     def delete_person(self, person_id):
         success = self.person_use_cases.delete_person(person_id)
@@ -57,7 +72,8 @@ class PersonController:
 
     def list_persons(self):
         persons = self.person_use_cases.list_persons()
-        return jsonify(persons), 200
+        persons_dict = list(map(lambda person: person.to_dict(), persons))
+        return jsonify(persons_dict), 200
 
 
 # Initialize the controller with dependencies

@@ -15,7 +15,7 @@ from infrastructure.persistence.in_memory import HabitEventRepositoryImpl
 
 def init_logger():
     # Create a logger object
-    logger = logging.getLogger('data_forge_logger')
+    logger = logging.getLogger('data_forge_lab')
     logger.setLevel(logging.DEBUG)  # Set the logger level to DEBUG
 
     # Create a console handler to display logs on the console

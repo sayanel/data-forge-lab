@@ -9,7 +9,10 @@ class HabitService:
     def __init__(self, habit_repo: HabitRepository):
         self.habit_repo = habit_repo
 
-    def create_habit(self, person_id: UUID, name: str, goal: str, category: str, habit_id: Optional[UUID] = uuid4) -> Habit:
+    def create_habit(self, person_id: UUID, name: str, goal: str, category: str, habit_id: Optional[UUID] = None) -> Habit:
+        if not habit_id:
+            habit_id = uuid4()
+            
         habit = Habit(person_id=person_id, name=name, goal=goal, category=category, habit_id=habit_id)
         return self.habit_repo.save(habit)
 

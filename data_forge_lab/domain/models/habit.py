@@ -38,3 +38,15 @@ class Habit:
         self.goal = new_goal
         self.updated_at = datetime.now()
 
+    def to_dict(self):
+        return {
+            "habit_id": str(self.habit_id),
+            "person_id": str(self.person_id),
+            "name": self.name,
+            "goal": self.goal,
+            "category": self.category,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "streak": self.streak,
+            "last_completed": self.last_completed.isoformat() if self.last_completed else None
+        }
