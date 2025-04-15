@@ -1,0 +1,36 @@
+.person-card {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  margin: 10px;
+  text-align: left;
+}
+
+.person-card h3 {
+  margin: 0 0 8px;
+}
+
+.create-habit-button {
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.create-habit-button:hover {
+  background-color: #45a049;
+}
+
+.habit-section ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.habit-section h4 {
+  margin-bottom: 4px;
+}
