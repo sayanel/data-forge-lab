@@ -1,8 +1,8 @@
 import unittest
 from datetime import date
 from uuid import uuid4
-from domain.services.person_service import PersonService
-from domain.models.person import Person
+from application.domain.services.person_service import PersonService
+from application.domain.models.person import Person
 from infrastructure.persistence.in_memory import InMemoryPersonRepository
 
 

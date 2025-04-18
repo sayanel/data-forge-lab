@@ -1,5 +1,5 @@
 from uuid import UUID
-from domain.services.habit_event_service import HabitEventService
+from application.domain.services.habit_event_service import HabitEventService
 
 
 class HabitEventUseCases:

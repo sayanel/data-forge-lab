@@ -2,10 +2,8 @@ import pytest
 from uuid import uuid4
 from random import choice
 from string import ascii_letters
-from datetime import datetime
 
-from domain.models.habit import Habit
-from domain.services.habit_service import HabitService
+from application.domain.services.habit_service import HabitService
 from infrastructure.persistence.mongodb.habit import MongoHabitRepository
 from tests.utils.mongo_test_config import get_test_collection
 

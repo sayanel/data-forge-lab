@@ -1,6 +1,6 @@
 from uuid import UUID
 from typing import List, Optional
-from domain.models.event import HabitEvent
+from application.domain.models.event import HabitEvent
 from interfaces.repositories.habit_event_repository import HabitEventRepository
 
 

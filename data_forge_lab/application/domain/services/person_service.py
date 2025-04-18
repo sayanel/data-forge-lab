@@ -1,6 +1,6 @@
 from datetime import date
 from typing import List, Optional
-from domain.models.person import Person
+from application.domain.models.person import Person
 from interfaces.repositories.person_repository import PersonRepository
 from uuid import UUID, uuid4
 

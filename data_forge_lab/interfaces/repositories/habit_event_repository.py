@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from domain.models.event import HabitEvent
+from application.domain.models.event import HabitEvent
 from uuid import UUID
 
 

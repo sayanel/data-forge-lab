@@ -5,7 +5,7 @@ from uuid import UUID
 from datetime import datetime
 from pymongo.collection import Collection
 
-from domain.models.habit import Habit
+from application.domain.models.habit import Habit
 from interfaces.repositories.habit_repository import HabitRepository
 
 

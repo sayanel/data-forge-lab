@@ -1,9 +1,9 @@
 from uuid import UUID
 from typing import List, Optional
 
-from domain.models.person import Person
-from domain.models.habit import Habit
-from domain.models.event import HabitEvent
+from application.domain.models.person import Person
+from application.domain.models.habit import Habit
+from application.domain.models.event import HabitEvent
 
 from interfaces.repositories.person_repository import PersonRepository
 from interfaces.repositories.habit_event_repository import HabitEventRepository

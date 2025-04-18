@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from pymongo.collection import Collection
 
-from domain.models.person import Person
+from application.domain.models.person import Person
 from interfaces.repositories.person_repository import PersonRepository
 
 

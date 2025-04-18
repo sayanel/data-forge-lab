@@ -3,7 +3,7 @@ from datetime import datetime
 from uuid import UUID
 from flask import Blueprint, request, jsonify
 from application.use_cases.person_use_cases import PersonUseCases
-from domain.services.person_service import PersonService
+from application.domain.services.person_service import PersonService
 
 logger = logging.getLogger('data_forge_lab')
 

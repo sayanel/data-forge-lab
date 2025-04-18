@@ -1,5 +1,5 @@
 from uuid import UUID
-from domain.services.habit_service import HabitService
+from application.domain.services.habit_service import HabitService
 from interfaces.repositories.habit_repository import HabitRepository
 from interfaces.repositories.habit_event_repository import HabitEventRepository
 

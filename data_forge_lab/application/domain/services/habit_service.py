@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 from datetime import datetime
 from typing import List, Optional
-from domain.models.habit import Habit
+from application.domain.models.habit import Habit
 from interfaces.repositories.habit_repository import HabitRepository
 
 

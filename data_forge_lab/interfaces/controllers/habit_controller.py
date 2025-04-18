@@ -2,7 +2,7 @@ import logging
 from uuid import UUID
 from flask import Blueprint, request, jsonify
 from application.use_cases.habit_use_cases import HabitUseCases
-from domain.services.habit_service import HabitService
+from application.domain.services.habit_service import HabitService
 
 logger = logging.getLogger('data_forge_lab')
 

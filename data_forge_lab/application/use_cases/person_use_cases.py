@@ -2,7 +2,7 @@ from uuid import UUID
 from datetime import date
 from typing import Optional
 
-from domain.services.person_service import PersonService
+from application.domain.services.person_service import PersonService
 
 
 class PersonUseCases:

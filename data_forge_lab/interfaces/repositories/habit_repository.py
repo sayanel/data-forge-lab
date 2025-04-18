@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from domain.models.habit import Habit
+from application.domain.models.habit import Habit
 from uuid import UUID
 
 

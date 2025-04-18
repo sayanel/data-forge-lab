@@ -1,13 +1,11 @@
 import pytest
-from uuid import UUID
-from pymongo import MongoClient
 from uuid import uuid4
 from datetime import date
 from random import randint, choice
 from string import ascii_letters
 
-from domain.models.person import Person
-from domain.services.person_service import PersonService
+from application.domain.models.person import Person
+from application.domain.services.person_service import PersonService
 from infrastructure.persistence.mongodb.person import MongoPersonRepository
 
 from tests.utils.mongo_test_config import get_test_collection

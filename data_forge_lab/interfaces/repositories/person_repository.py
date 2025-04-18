@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from domain.models.person import Person
+from application.domain.models.person import Person
 from uuid import UUID
 
 

@@ -3,7 +3,7 @@ from uuid import UUID
 from datetime import datetime
 from pymongo.collection import Collection
 
-from domain.models.event import HabitEvent
+from application.domain.models.event import HabitEvent
 from interfaces.repositories.habit_event_repository import HabitEventRepository
 
 

@@ -2,8 +2,8 @@ import pytest
 from uuid import uuid4
 from datetime import datetime
 
-from domain.services.habit_event_service import HabitEventService
-from domain.models.event import HabitEvent
+from application.domain.services.habit_event_service import HabitEventService
+from application.domain.models.event import HabitEvent
 from infrastructure.persistence.mongodb.habit_event import MongoHabitEventRepository
 from tests.utils.mongo_test_config import get_test_collection
 
