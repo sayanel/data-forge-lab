@@ -1,6 +1,16 @@
 from dataclasses import dataclass, field
 from datetime import date
 from uuid import UUID, uuid4
+from enum import Enum
+from typing import Optional
+
+
+class Country(Enum):
+    USA = "USA"
+    UK = "UK"
+    FRANCE = "France"
+    GERMANY = "Germany"
+    JAPAN = "Japan"
 
 
 @dataclass
@@ -11,6 +21,7 @@ class Person:
     email: str
     phone_number: str
     address: str
+    country: Optional[Country] = None
     gender: str = None
     person_id: UUID = field(default_factory=uuid4)
     notification_preferences: dict = field(default_factory=dict)
@@ -40,6 +51,7 @@ class Person:
             "phone_number": self.phone_number,
             "address": self.address,
             "gender": self.gender,
+            "country": self.country.value if self.country else None,
             "language_preference": self.language_preference,
             "creation_date": self.creation_date.isoformat(),
             "last_updated": self.last_updated.isoformat(),
@@ -54,6 +66,7 @@ class Person:
             "phone_number": self.phone_number,
             "address": self.address,
             "gender": self.gender,
+            "country": self.country,
             "notification_preferences": self.notification_preferences,
             "language_preference": self.language_preference,
             "person_id": str(self.person_id),

@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from pymongo.collection import Collection
 
-from application.domain.models.person import Person
+from application.domain.models.person import Person, Country
 from interfaces.repositories.person_repository import PersonRepository
 
 
@@ -49,6 +49,9 @@ class MongoPersonRepository(PersonRepository):
         return result.deleted_count > 0
 
     def _from_dict(self, data: dict) -> Person:
+        country_value = data.get("country")
+        country = Country(country_value) if country_value else None
+        
         return Person(
             person_id=UUID(data["person_id"]),
             first_name=data["first_name"],
@@ -58,6 +61,7 @@ class MongoPersonRepository(PersonRepository):
             phone_number=data["phone_number"],
             address=data["address"],
             gender=data.get("gender"),
+            country=country,
             notification_preferences=data.get("notification_preferences", {}),
             language_preference=data.get("language_preference", "English"),
             creation_date=date.fromisoformat(data.get("creation_date", date.today().isoformat())),
