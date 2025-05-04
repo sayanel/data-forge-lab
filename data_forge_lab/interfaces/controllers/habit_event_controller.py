@@ -3,6 +3,7 @@ from uuid import UUID
 from flask import Blueprint, request, jsonify
 from application.use_cases.habit_event_use_cases import HabitEventUseCases
 from application.domain.services.habit_event_service import HabitEventService
+from interfaces.event_publisher import EventPublisher
 
 logger = logging.getLogger('data_forge_lab')
 
@@ -56,7 +57,7 @@ class HabitEventController:
 
 
 # Initialize the controller with dependencies
-def init_habit_event_controller(habit_event_repo):
-    habit_event_service = HabitEventService(habit_event_repo)
+def init_habit_event_controller(habit_event_repo, event_publisher: EventPublisher):
+    habit_event_service = HabitEventService(habit_event_repo, event_publisher)
     habit_event_use_cases = HabitEventUseCases(habit_event_service)
     return HabitEventController(habit_event_use_cases)
