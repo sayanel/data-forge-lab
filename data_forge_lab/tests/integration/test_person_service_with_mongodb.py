@@ -4,7 +4,7 @@ from datetime import date
 from random import randint, choice
 from string import ascii_letters
 
-from application.domain.models.person import Person
+from application.domain.models.person import Person, Country
 from application.domain.services.person_service import PersonService
 from infrastructure.persistence.mongodb.person import MongoPersonRepository
 
@@ -37,7 +37,8 @@ def test_create_and_get_person(person_service):
         email="alice@example.com",
         phone_number="123-456-7890",
         address="123 Main St",
-        gender="Female"
+        gender="Female",
+        country=Country.USA
     )
 
     # Save
@@ -58,7 +59,8 @@ def test_update_person(person_service):
         email="bob@example.com",
         phone_number="555-555-5555",
         address="456 Side St",
-        gender="Male"
+        gender="Male",
+        country=Country.UK
     )
 
     person_service.create_person(**person.to_creation_dict())
@@ -82,7 +84,8 @@ def test_delete_person(person_service):
         email="carol@example.com",
         phone_number="111-111-1111",
         address="987 Hidden Rd",
-        gender="Female"
+        gender="Female",
+        country=Country.FRANCE
     )
 
     person_service.create_person(**person.to_creation_dict())
@@ -102,7 +105,8 @@ def test_list_all(person_service):
             email=f"{random_string()}@example.com",
             phone_number="000-000-0000",
             address="Some address",
-            gender="Other"
+            gender="Other",
+            country=choice(list(Country))
         )
         person_service.create_person(**p.to_creation_dict())
 
@@ -139,3 +143,26 @@ def test_get_person_invalid_uuid_type(person_service):
     with pytest.raises(ValueError):
         # Not a UUID, but string or number
         person_service.get_person("not-a-uuid")
+
+
+def test_update_person_country(person_service):
+    person = Person(
+        first_name="David",
+        last_name="Wilson",
+        date_of_birth=date(1988, 7, 15),
+        email="david@example.com",
+        phone_number="222-222-2222",
+        address="321 Oak St",
+        gender="Male",
+        country=Country.USA
+    )
+
+    person_service.create_person(**person.to_creation_dict())
+    update_fields = {
+        "country": Country.GERMANY
+    }
+
+    updated = person_service.update_person(person.person_id, **update_fields)
+
+    assert updated is not None
+    assert updated.country == Country.GERMANY

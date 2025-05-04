@@ -3,6 +3,9 @@ from unittest.mock import patch, MagicMock
 from flask import Flask
 from interfaces.controllers.person_controller import PersonController, init_person_controller
 from infrastructure.persistence.in_memory import InMemoryPersonRepository
+from application.domain.models.person import Country, Person
+from datetime import date
+from uuid import UUID
 
 
 class TestPersonController(unittest.TestCase):
@@ -25,20 +28,29 @@ class TestPersonController(unittest.TestCase):
 
     @patch('application.use_cases.person_use_cases.PersonUseCases.create_person')
     def test_create_person(self, mock_create_person):
-        # Mock the create_person method
-        mock_person = {
-            "person_id": "123e4567-e89b-12d3-a456-426614174000",
+        # Create a mock Person object
+        mock_person = Person(
+            person_id=UUID("123e4567-e89b-12d3-a456-426614174000"),
+            first_name="John",
+            last_name="Doe",
+            date_of_birth=date(1990, 1, 1),
+            email="john.doe@example.com",
+            phone_number="123-456-7890",
+            address="123 Main St",
+            country=Country.USA
+        )
+        mock_create_person.return_value = mock_person
+
+        # Send a POST request to create a person
+        response = self.client.post('/api/persons', json=[{
             "first_name": "John",
             "last_name": "Doe",
             "date_of_birth": "1990-01-01",
             "email": "john.doe@example.com",
             "phone_number": "123-456-7890",
-            "address": "123 Main St"
-        }
-        mock_create_person.return_value = mock_person
-
-        # Send a POST request to create a person
-        response = self.client.post('/api/persons', json=[mock_person])
+            "address": "123 Main St",
+            "country": Country.USA.value
+        }])
 
         # Assert the response
         self.assertEqual(response.status_code, 201)
@@ -46,16 +58,17 @@ class TestPersonController(unittest.TestCase):
 
     @patch('application.use_cases.person_use_cases.PersonUseCases.get_person')
     def test_get_person(self, mock_get_person):
-        # Mock the get_person method
-        mock_person = {
-            "person_id": "123e4567-e89b-12d3-a456-426614174000",
-            "first_name": "John",
-            "last_name": "Doe",
-            "date_of_birth": "1990-01-01",
-            "email": "john.doe@example.com",
-            "phone_number": "123-456-7890",
-            "address": "123 Main St"
-        }
+        # Create a mock Person object
+        mock_person = Person(
+            person_id=UUID("123e4567-e89b-12d3-a456-426614174000"),
+            first_name="John",
+            last_name="Doe",
+            date_of_birth=date(1990, 1, 1),
+            email="john.doe@example.com",
+            phone_number="123-456-7890",
+            address="123 Main St",
+            country=Country.USA
+        )
         mock_get_person.return_value = mock_person
 
         # Send a GET request to retrieve a person
@@ -67,16 +80,17 @@ class TestPersonController(unittest.TestCase):
 
     @patch('application.use_cases.person_use_cases.PersonUseCases.update_person')
     def test_update_person(self, mock_update_person):
-        # Mock the update_person method
-        mock_person = {
-            "person_id": "123e4567-e89b-12d3-a456-426614174000",
-            "first_name": "Jane",
-            "last_name": "Doe",
-            "date_of_birth": "1990-01-01",
-            "email": "john.doe@example.com",
-            "phone_number": "123-456-7890",
-            "address": "123 Main St"
-        }
+        # Create a mock Person object
+        mock_person = Person(
+            person_id=UUID("123e4567-e89b-12d3-a456-426614174000"),
+            first_name="Jane",
+            last_name="Doe",
+            date_of_birth=date(1990, 1, 1),
+            email="john.doe@example.com",
+            phone_number="123-456-7890",
+            address="123 Main St",
+            country=Country.USA
+        )
         mock_update_person.return_value = mock_person
 
         # Send a PUT request to update a person
@@ -99,19 +113,18 @@ class TestPersonController(unittest.TestCase):
 
     @patch('application.use_cases.person_use_cases.PersonUseCases.list_persons')
     def test_list_persons(self, mock_list_persons):
-        # Mock the list_persons method
-        mock_persons = [
-            {
-                "person_id": "123e4567-e89b-12d3-a456-426614174000",
-                "first_name": "John",
-                "last_name": "Doe",
-                "date_of_birth": "1990-01-01",
-                "email": "john.doe@example.com",
-                "phone_number": "123-456-7890",
-                "address": "123 Main St"
-            }
-        ]
-        mock_list_persons.return_value = mock_persons
+        # Create a mock Person object
+        mock_person = Person(
+            person_id=UUID("123e4567-e89b-12d3-a456-426614174000"),
+            first_name="John",
+            last_name="Doe",
+            date_of_birth=date(1990, 1, 1),
+            email="john.doe@example.com",
+            phone_number="123-456-7890",
+            address="123 Main St",
+            country=Country.USA
+        )
+        mock_list_persons.return_value = [mock_person]
 
         # Send a GET request to list persons
         response = self.client.get('/api/persons')

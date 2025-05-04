@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from uuid import uuid4
 from application.domain.services.person_service import PersonService
-from application.domain.models.person import Person
+from application.domain.models.person import Person, Country
 from infrastructure.persistence.in_memory import InMemoryPersonRepository
 
 
@@ -23,7 +23,8 @@ class TestPersonService(unittest.TestCase):
             "date_of_birth": date(1990, 1, 1),
             "email": "john.doe@example.com",
             "phone_number": "123-456-7890",
-            "address": "123 Main St"
+            "address": "123 Main St",
+            "country": Country.USA
         }
 
         # Act
@@ -34,7 +35,8 @@ class TestPersonService(unittest.TestCase):
             date_of_birth=person_data["date_of_birth"],
             email=person_data["email"],
             phone_number=person_data["phone_number"],
-            address=person_data["address"]
+            address=person_data["address"],
+            country=person_data["country"]
         )
 
         # Assert
@@ -50,7 +52,8 @@ class TestPersonService(unittest.TestCase):
             "date_of_birth": date(1992, 2, 2),
             "email": "jane.smith@example.com",
             "phone_number": "987-654-3210",
-            "address": "456 Elm St"
+            "address": "456 Elm St",
+            "country": Country.UK
         }
 
         # Act
@@ -60,7 +63,8 @@ class TestPersonService(unittest.TestCase):
             date_of_birth=person_data["date_of_birth"],
             email=person_data["email"],
             phone_number=person_data["phone_number"],
-            address=person_data["address"]
+            address=person_data["address"],
+            country=person_data["country"]
         )
 
         # Assert
@@ -78,7 +82,8 @@ class TestPersonService(unittest.TestCase):
             date_of_birth=date(1990, 1, 1),
             email="john.doe@example.com",
             phone_number="123-456-7890",
-            address="123 Main St"
+            address="123 Main St",
+            country=Country.USA
         )
         self.person_repo.save(person)
 
@@ -99,7 +104,8 @@ class TestPersonService(unittest.TestCase):
             date_of_birth=date(1990, 1, 1),
             email="john.doe@example.com",
             phone_number="123-456-7890",
-            address="123 Main St"
+            address="123 Main St",
+            country=Country.USA
         )
         self.person_repo.save(person)
 
@@ -109,7 +115,8 @@ class TestPersonService(unittest.TestCase):
             "date_of_birth": date(1990, 1, 1),
             "email": "jane.doe@example.com",
             "phone_number": "123-456-7890",
-            "address": "123 Main St"
+            "address": "123 Main St",
+            "country": Country.UK
         }
 
         # Act
@@ -130,7 +137,8 @@ class TestPersonService(unittest.TestCase):
             date_of_birth=date(1990, 1, 1),
             email="john.doe@example.com",
             phone_number="123-456-7890",
-            address="123 Main St"
+            address="123 Main St",
+            country=Country.USA
         )
         self.person_repo.save(person)
 
@@ -150,7 +158,8 @@ class TestPersonService(unittest.TestCase):
             date_of_birth=date(1990, 1, 1),
             email="john.doe@example.com",
             phone_number="123-456-7890",
-            address="123 Main St"
+            address="123 Main St",
+            country=Country.USA
         )
         person2 = Person(
             person_id=uuid4(),
@@ -159,7 +168,8 @@ class TestPersonService(unittest.TestCase):
             date_of_birth=date(1992, 2, 2),
             email="jane.smith@example.com",
             phone_number="987-654-3210",
-            address="456 Elm St"
+            address="456 Elm St",
+            country=Country.UK
         )
         self.person_repo.save(person1)
         self.person_repo.save(person2)

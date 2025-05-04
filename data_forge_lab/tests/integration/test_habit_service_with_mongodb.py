@@ -6,6 +6,8 @@ from string import ascii_letters
 from application.domain.services.habit_service import HabitService
 from infrastructure.persistence.mongodb.habit import MongoHabitRepository
 from tests.utils.mongo_test_config import get_test_collection
+from application.domain.models.event import HabitEvent
+from infrastructure.persistence.mongodb.habit_event import MongoHabitEventRepository
 
 
 def random_string(length=8):
@@ -13,17 +15,26 @@ def random_string(length=8):
 
 
 @pytest.fixture(scope="module")
-def mongo_collection():
+def habit_collection():
     collection = get_test_collection("test_habits")
     collection.delete_many({})
     yield collection
     collection.delete_many({})
 
 
+@pytest.fixture(scope="module")
+def event_collection():
+    collection = get_test_collection("test_habit_events")
+    collection.delete_many({})
+    yield collection
+    collection.delete_many({})
+
+
 @pytest.fixture
-def habit_service(mongo_collection):
-    repo = MongoHabitRepository(mongo_collection)
-    return HabitService(repo)
+def habit_service(habit_collection, event_collection):
+    habit_repo = MongoHabitRepository(habit_collection)
+    event_repo = MongoHabitEventRepository(event_collection)
+    return HabitService(habit_repo=habit_repo, habit_event_repo=event_repo)
 
 
 def test_create_and_get_habit(habit_service):
@@ -95,3 +106,32 @@ def test_list_habits(habit_service):
     habits = habit_service.list_habits(person_id)
     assert isinstance(habits, list)
     assert len(habits) >= 3
+
+
+def test_delete_habit_cascades_events(habit_service, event_collection):
+    event_repo = MongoHabitEventRepository(event_collection)
+
+    person_id = uuid4()
+    # Create a habit
+    habit = habit_service.create_habit(
+        person_id=person_id,
+        name="Read",
+        goal="Every day",
+        category="Personal Development"
+    )
+    # Create two events for this habit
+    event1 = event_repo.save(
+        HabitEvent(person_id=person_id, habit_id=habit.habit_id, notes="First event")
+    )
+    event2 = event_repo.save(
+        HabitEvent(person_id=person_id, habit_id=habit.habit_id, notes="Second event")
+    )
+    # Ensure events exist
+    events = event_repo.find_by_habit_id(habit.habit_id)
+    assert len(events) == 2
+    # Delete the habit
+    deleted = habit_service.delete_habit(habit.habit_id)
+    assert deleted is True
+    # Events should also be deleted
+    events_after = event_repo.find_by_habit_id(habit.habit_id)
+    assert len(events_after) == 0
