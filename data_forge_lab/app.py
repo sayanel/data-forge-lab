@@ -1,3 +1,30 @@
+"""app.py
+
+This module defines the entry point for the Data Forge Lab Flask web application.
+
+The application:
+- Initializes the web server (`Flask`) and CORS configuration.
+- Initializes logging (both console and rotating file logging).
+- Loads repositories, services, and controllers via the dependency injection container (`RepositoryContainer`).
+- Registers the API controllers as Flask blueprints under the `/api` URL prefix.
+
+Key Points:
+- **Dependency Injection**: Repositories and services are not instantiated manually but retrieved from the container.
+- **Separation of Concerns**: This file only wires high-level components together; all detailed implementations
+  (repositories, event publishers, services) are handled by the container.
+- **CORS**: Cross-Origin Resource Sharing is enabled to allow the frontend to communicate with this backend.
+- **Logging**: Rotating file logs are used to prevent uncontrolled log file growth, while also logging to console
+  for real-time feedback during development.
+
+Benefits of this architecture:
+- Clear, modular structure that isolates concerns (web server vs business logic).
+- Easier to change/replace technologies (e.g., swap Flask for another framework in the future).
+- Unified way to register blueprints/controllers.
+- Centralized and consistent logging setup.
+- Improved testability and maintainability.
+
+"""
+
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -5,10 +32,6 @@ from flask import Flask
 from flask_cors import CORS
 
 from containers import RepositoryContainer
-
-from interfaces.controllers.habit_controller import init_habit_controller
-from interfaces.controllers.person_controller import init_person_controller
-from interfaces.controllers.habit_event_controller import init_habit_event_controller
 
 
 def init_logger():
@@ -48,21 +71,19 @@ def create_app():
     # CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-    # Initialize the container and repositories
     container = RepositoryContainer()
-    person_repo = container.person_repo()
-    habit_repo = container.habit_repo()
-    habit_event_repo = container.habit_event_repo()
 
-    # Initialize controllers with the repositories
-    person_controller = init_person_controller(person_repo)
-    habit_controller = init_habit_controller(habit_repo)
-    habit_event_controller = init_habit_event_controller(habit_event_repo)
+    person_controller = container.person_controller()
+    habit_controller = container.habit_controller()
+    habit_event_controller = container.habit_event_controller()
+    analytics_controller = container.analytics_controller()
+    system_controller = container.system_controller()
 
-    # Register blueprints
     app.register_blueprint(person_controller.person_blueprint, url_prefix='/api')
     app.register_blueprint(habit_controller.habit_blueprint, url_prefix='/api')
     app.register_blueprint(habit_event_controller.habit_event_blueprint, url_prefix='/api')
+    app.register_blueprint(analytics_controller.analytics_blueprint, url_prefix='/api')
+    app.register_blueprint(system_controller.system_blueprint, url_prefix='/api')
 
     return app
 
