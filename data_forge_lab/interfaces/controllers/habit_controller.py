@@ -30,7 +30,10 @@ class HabitController:
         name = data['name']
         goal = data['goal']
         category = data['category']
-        habit = self.habit_use_cases.create_habit(person_id=person_id, name=name, goal=goal, category=category)
+        try:
+            habit = self.habit_use_cases.create_habit(person_id=person_id, name=name, goal=goal, category=category)
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 400
         return jsonify(habit.to_dict()), 201
 
     def update_habit(self, habit_id):
