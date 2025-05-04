@@ -5,3 +5,4 @@ pymongo
 pytest
 python-dotenv-1.1.0
 dependency_injector-4.46.0
+kafka-python-2.1.5
