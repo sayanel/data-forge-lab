@@ -34,3 +34,27 @@ class HabitEvent:
             "notes": self.notes,
             "status": self.status
         }
+
+    def to_event_created(self) -> "HabitEventCreatedMessage":
+        return HabitEventCreatedMessage(
+            person_id=str(self.person_id),
+            habit_id=str(self.habit_id),
+            event_id=str(self.event_id),
+            timestamp=self.timestamp
+        )
+
+
+@dataclass
+class HabitEventCreatedMessage:
+    person_id: str
+    habit_id: str
+    event_id: str
+    timestamp: datetime
+
+    def to_dict(self):
+        return {
+            "person_id": self.person_id,
+            "habit_id": self.habit_id,
+            "event_id": self.event_id,
+            "timestamp": self.timestamp.isoformat()
+        }
