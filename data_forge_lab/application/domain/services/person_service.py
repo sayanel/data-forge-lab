@@ -1,6 +1,6 @@
 from datetime import date
 from typing import List, Optional
-from application.domain.models.person import Person
+from application.domain.models.person import Person, Country
 from interfaces.repositories.person_repository import PersonRepository
 from uuid import UUID, uuid4
 
@@ -9,7 +9,7 @@ class PersonService:
     def __init__(self, person_repo: PersonRepository):
         self.person_repo = person_repo
 
-    def create_person(self, first_name: str, last_name: str, date_of_birth: date, email: str, phone_number: str, address: str, person_id: Optional[UUID] = None, gender: Optional[str] = None, notification_preferences: Optional[dict] = None, language_preference: str = "English") -> Person:
+    def create_person(self, first_name: str, last_name: str, date_of_birth: date, email: str, phone_number: str, address: str, country: Country, person_id: Optional[UUID] = None, gender: Optional[str] = None, notification_preferences: Optional[dict] = None, language_preference: str = "English") -> Person:
         if not person_id:
             person_id = uuid4()
 
@@ -24,7 +24,8 @@ class PersonService:
             gender=gender,
             person_id=person_id,
             notification_preferences=notification_preferences or {},
-            language_preference=language_preference
+            language_preference=language_preference,
+            country=country
         )
         return self.person_repo.save(person)
 

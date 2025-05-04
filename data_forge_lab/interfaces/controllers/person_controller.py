@@ -4,6 +4,7 @@ from uuid import UUID
 from flask import Blueprint, request, jsonify
 from application.use_cases.person_use_cases import PersonUseCases
 from application.domain.services.person_service import PersonService
+from application.domain.models.person import Country
 
 logger = logging.getLogger('data_forge_lab')
 
@@ -20,6 +21,8 @@ class PersonController:
         self.person_blueprint.route('/persons/<uuid:person_id>', methods=['PUT'])(self.update_person)
         self.person_blueprint.route('/persons/<uuid:person_id>', methods=['DELETE'])(self.delete_person)
         self.person_blueprint.route('/persons', methods=['GET'])(self.list_persons)
+        self.person_blueprint.route('/countries', methods=['GET'])(self.get_countries)
+
 
     def create_person(self):
         created_persons = []
@@ -38,6 +41,7 @@ class PersonController:
                     email=person_to_create['email'],
                     phone_number=person_to_create['phone_number'],
                     address=person_to_create['address'],
+                    country=Country(person_to_create['country']),
                     gender=person_to_create.get('gender'),
                     notification_preferences=person_to_create.get('notification_preferences'),
                     language_preference=person_to_create.get('language_preference', "English")
@@ -74,6 +78,15 @@ class PersonController:
         persons = self.person_use_cases.list_persons()
         persons_dict = list(map(lambda person: person.to_dict(), persons))
         return jsonify(persons_dict), 200
+
+    def get_countries(self):
+        """Get list of available countries."""
+        try:
+            countries = [{"name": country.name, "value": country.value} for country in Country]
+            return jsonify(countries), 200
+        except Exception as e:
+            logger.error(f"Error getting countries: {e}")
+            return jsonify({"error": "Failed to get countries", "details": str(e)}), 500
 
 
 # Initialize the controller with dependencies
