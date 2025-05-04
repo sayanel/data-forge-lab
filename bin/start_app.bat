@@ -1,6 +1,6 @@
 @echo off
-title Data Forge Lab - App
+title Flask App
 cd C:\Users\maximilien\Dev\data-forge-lab
 call venv\Scripts\activate
 cd data_forge_lab
-start cmd /k python app.py
+cmd /k python app.py
