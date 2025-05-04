@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import PersonCard from './PersonCard';
 import PersonGenerator from '../PersonGenerator';
+import GlobalAnalytics from './GlobalAnalytics';
 import './AdminDashboard.css';
+import ServiceStatus from '../ServiceStatus';
 
 const AdminDashboard = ({ setLogMessages }) => {
   const [persons, setPersons] = useState([]);
@@ -23,6 +25,7 @@ const AdminDashboard = ({ setLogMessages }) => {
   return (
     <div className="admin-dashboard-container">
       <div className="admin-sidebar">
+        <ServiceStatus />
         <PersonGenerator
           setLogMessages={setLogMessages}
           onGenerateComplete={fetchPersons}
@@ -44,6 +47,8 @@ const AdminDashboard = ({ setLogMessages }) => {
             <p>No persons found.</p>
           )}
         </div>
+
+        <GlobalAnalytics />
       </div>
     </div>
   );

@@ -25,18 +25,33 @@
   color: #888;
 }
 
+.habit-card-header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .add-event-button {
-  background-color: #28a745;
+  background-color: #4caf50;
   color: white;
-  border: none;
-  font-size: 18px;
-  padding: 4px 10px;
   border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: none;
+  font-size: 20px;
+  margin-right: 4px;
   cursor: pointer;
 }
 
-.add-event-button:hover {
-  background-color: #218838;
+.delete-habit-button {
+  background-color: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .habit-events-row {

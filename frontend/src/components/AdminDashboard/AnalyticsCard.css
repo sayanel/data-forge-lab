@@ -1,0 +1,58 @@
+.analytics-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-card h4 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+}
+
+.analytics-section {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.analytics-section h5 {
+  color: #34495e;
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+.consistency-score {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #27ae60;
+  text-align: center;
+  padding: 10px;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+}
+
+.analytics-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.analytics-section li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.analytics-section li:last-child {
+  border-bottom: none;
+}
+
+.analytics-section p {
+  color: #7f8c8d;
+  font-style: italic;
+  margin: 0;
+} 

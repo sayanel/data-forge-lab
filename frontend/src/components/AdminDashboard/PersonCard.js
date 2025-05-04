@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './PersonCard.css';
 import HabitCard from './HabitCard';
+import AnalyticsCard from './AnalyticsCard';
 
 
 const habitCategories = {
@@ -19,6 +20,7 @@ const PersonCard = ({ person, setLogMessages }) => {
     try {
       const response = await axios.get(`http://localhost:5000/api/persons/${person.person_id}/habits`);
       setHabits(response.data);
+      setLogMessages((prev) => [`Fetched ${response.data.length} habits for ${person.first_name}`, ...prev]);
     } catch (error) {
       setLogMessages((prev) => [`Error fetching habits: ${error}`, ...prev]);
     }
@@ -40,9 +42,24 @@ const PersonCard = ({ person, setLogMessages }) => {
     try {
       await axios.post('http://localhost:5000/api/habits', newHabit);
       setLogMessages((prev) => [`Habit "${randomHabit}" created for ${person.first_name}`, ...prev]);
-      fetchHabits(); // refresh after creation
+      await fetchHabits(); // refresh after creation
     } catch (error) {
       setLogMessages((prev) => [`Error creating habit: ${error}`, ...prev]);
+    }
+  };
+
+  const handleEventCreated = async () => {
+    setLogMessages((prev) => [`Refreshing habits for ${person.first_name} after event creation`, ...prev]);
+    await fetchHabits();
+  };
+
+  const handleDeleteHabit = async (habitId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/habits/${habitId}`);
+      setLogMessages((prev) => [`Habit deleted`, ...prev]);
+      await fetchHabits();
+    } catch (error) {
+      setLogMessages((prev) => [`Error deleting habit: ${error}`, ...prev]);
     }
   };
 
@@ -70,12 +87,16 @@ const PersonCard = ({ person, setLogMessages }) => {
                 habit={habit}
                 personId={person.person_id}
                 setLogMessages={setLogMessages}
+                onEventCreated={handleEventCreated}
+                onDeleteHabit={handleDeleteHabit}
               />
             ))
           ) : (
             <p>No habits found.</p>
           )}
       </div>
+
+      <AnalyticsCard personId={person.person_id} />
     </div>
   );
 };
