@@ -9,6 +9,46 @@ This project is a personal data management and productivity tracker that allows 
 - Microservices: Go (notifications, analytics)
 - Messaging: Kafka (event publishing + consumption)
 
+# How to get started:
+
+To get the project up and running, follow these steps:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/sayanel/data-forge-lab
+    cd data-forge-lab
+    ```
+
+2.  **Set up the Python virtual environment:**
+    ```bash
+    # For Windows
+    python -m venv venv
+    .\venv\Scripts\activate
+
+    # For macOS and Linux
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+3.  **Install backend dependencies:**
+    With the virtual environment activated, install the required Python packages:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Set up environment variables:**
+    - Edit the `.env` file with your specific configuration. Most likely you will just have to replace the IP to reach Kafka, that is running in wsl2.
+    - Go through the batch file in the bin directory and potentially change paths to mongo and kafka.
+
+5.  **Run the application:**
+    Navigate to the bin directory.
+    Start:
+      - start_mongo.bat
+      - kafka/start_kafka.bat
+      - start_app.bat
+      - start_front.bat
+      - start_microservices.bat (optional)
+
 # Key Concepts:
 - Person: A user entity
 - Habit: A recurring activity
@@ -17,7 +57,6 @@ This project is a personal data management and productivity tracker that allows 
 
     
 # Project Architecture Overview
-
 This project is structured using a **clean, layered architecture** based on principles from **Onion** and **Hexagonal Architecture**. The goal is to keep the core logic independent from external concerns like databases, APIs, or frameworks, making the application modular, testable, and maintainable.
 
 - application/
@@ -156,7 +195,7 @@ Independent microservices that listen to Kafka and perform specific actions like
 **Key Design Principles:**
 
 - **Dependency Inversion:**  
-  The core domain doesn’t depend on infrastructure. Instead, it defines abstract interfaces (e.g., repository contracts).
+  The core domain doesn't depend on infrastructure. Instead, it defines abstract interfaces (e.g., repository contracts).
 
 - **Abstraction:**  
   Repositories are interfaces defined in the domain or adjacent layers, with implementations in `infrastructure`.

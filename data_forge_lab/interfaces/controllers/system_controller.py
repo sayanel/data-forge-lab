@@ -14,6 +14,7 @@ class SystemController:
     def get_status(self):
         """Health check for MongoDB, Kafka, and Flask."""
         status = {"mongo": False, "kafka": False, "flask": False}
+
         # MongoDB check
         try:
             if self.person_repo and hasattr(self.person_repo, 'collection'):
@@ -21,6 +22,7 @@ class SystemController:
                 status["mongo"] = True
         except Exception as e:
             logger.error(f"MongoDB health check failed: {e}")
+
         # Kafka check
         try:
             if self.event_publisher and hasattr(self.event_publisher, 'producer'):
@@ -28,6 +30,8 @@ class SystemController:
                 status["kafka"] = True
         except Exception as e:
             logger.error(f"Kafka health check failed: {e}")
+
         # Flask check: if this endpoint is hit, Flask is running
         status["flask"] = True
-        return jsonify(status), 200
+
+        return jsonify(status), 200 
