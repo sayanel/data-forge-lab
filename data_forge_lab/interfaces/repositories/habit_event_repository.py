@@ -24,3 +24,7 @@ class HabitEventRepository(ABC):
     @abstractmethod
     def delete(self, event_id: UUID) -> bool:
         pass
+
+    @abstractmethod
+    def find_by_person_id(self, person_id: UUID) -> List[HabitEvent]:
+        pass

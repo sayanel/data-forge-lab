@@ -54,6 +54,21 @@
   cursor: pointer;
 }
 
+.streak-circle {
+  background-color: #bbb;
+  color: #fff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 8px;
+  border: 2px solid #e0e0e0;
+}
+
 .habit-events-row {
   display: flex;
   flex-wrap: wrap;

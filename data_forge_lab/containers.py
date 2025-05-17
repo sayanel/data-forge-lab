@@ -99,7 +99,7 @@ class RepositoryContainer(containers.DeclarativeContainer):
     # Services
     person_service = providers.Factory(PersonService, person_repo=person_repo)
     habit_service = providers.Factory(HabitService, habit_repo=habit_repo, habit_event_repo=habit_event_repo)
-    habit_event_service = providers.Factory(HabitEventService, habit_event_repo=habit_event_repo, event_publisher=event_publisher)
+    habit_event_service = providers.Factory(HabitEventService, habit_event_repo=habit_event_repo, event_publisher=event_publisher, habit_repo=habit_repo)
     analytics_service = providers.Factory(AnalyticsService, person_repo=person_repo, habit_repo=habit_repo, habit_event_repo=habit_event_repo)
 
     # Use Cases

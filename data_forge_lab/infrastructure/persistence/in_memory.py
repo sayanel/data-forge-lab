@@ -54,6 +54,9 @@ class InMemoryHabitEventRepository(HabitEventRepository):
     def find_by_habit_id(self, habit_id: UUID) -> List[HabitEvent]:
         return [event for event in self.storage.values() if event.habit_id == habit_id]
 
+    def find_by_person_id(self, person_id: UUID) -> List[HabitEvent]:
+        return [event for event in self.storage.values() if event.person_id == person_id]
+
     def delete(self, event_id: UUID) -> bool:
         if event_id in self.storage:
             del self.storage[event_id]

@@ -20,9 +20,10 @@ class TestHabitService(unittest.TestCase):
     def test_prevent_duplicate_habit(self):
         person_id = uuid4()
         self.service.create_habit(person_id, "Exercise", "Daily", "Health")
+        
         with self.assertRaises(ValueError):
             self.service.create_habit(person_id, "Exercise", "Weekly", "Health")
-        # Case-insensitive
+
         with self.assertRaises(ValueError):
             self.service.create_habit(person_id, "exercise", "Weekly", "Health")
 

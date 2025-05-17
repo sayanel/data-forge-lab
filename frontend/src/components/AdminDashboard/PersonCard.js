@@ -70,7 +70,11 @@ const PersonCard = ({ person, setLogMessages }) => {
 
   return (
     <div className="person-card">
-      <h3>{person.first_name} {person.last_name}</h3>
+      <h3
+        title={`First Name: ${person.first_name}\nLast Name: ${person.last_name}\nDate of Birth: ${person.date_of_birth}\nEmail: ${person.email}\nPhone: ${person.phone_number}\nAddress: ${person.address}\nGender: ${person.gender || 'N/A'}\nCountry: ${person.country || 'N/A'}\nPerson ID: ${person.person_id}\nNotification Preferences: ${JSON.stringify(person.notification_preferences || {})}\nLanguage: ${person.language_preference || 'N/A'}\nCreation Date: ${person.creation_date || 'N/A'}\nLast Updated: ${person.last_updated || 'N/A'}`}
+      >
+        {person.first_name} {person.last_name}
+      </h3>
       <p><strong>ID:</strong> {person.person_id}</p>
       <p><strong>Email:</strong> {person.email || "N/A"}</p>
 
@@ -89,6 +93,7 @@ const PersonCard = ({ person, setLogMessages }) => {
                 setLogMessages={setLogMessages}
                 onEventCreated={handleEventCreated}
                 onDeleteHabit={handleDeleteHabit}
+                currentStreak={habit.streak || 0}
               />
             ))
           ) : (

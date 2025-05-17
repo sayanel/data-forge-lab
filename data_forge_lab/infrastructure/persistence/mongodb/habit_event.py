@@ -32,6 +32,10 @@ class MongoHabitEventRepository(HabitEventRepository):
         docs = self.collection.find({"habit_id": str(habit_id)})
         return [self._from_dict(doc) for doc in docs]
 
+    def find_by_person_id(self, person_id: UUID) -> List[HabitEvent]:
+        docs = self.collection.find({"person_id": str(person_id)})
+        return [self._from_dict(doc) for doc in docs]
+
     def delete(self, event_id: UUID) -> bool:
         result = self.collection.delete_one({"event_id": str(event_id)})
         return result.deleted_count > 0

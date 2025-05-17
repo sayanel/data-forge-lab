@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './HabitCard.css';
 
-const HabitCard = ({ habit, personId, setLogMessages, onEventCreated, onDeleteHabit }) => {
+const HabitCard = ({ habit, personId, setLogMessages, onEventCreated, onDeleteHabit, currentStreak }) => {
   const [events, setEvents] = useState([]);
 
   const fetchHabitEvents = async () => {
@@ -48,13 +48,17 @@ const HabitCard = ({ habit, personId, setLogMessages, onEventCreated, onDeleteHa
   }, [habit.habit_id]);
 
   return (
-    <div className="habit-card">
+    <div
+      className="habit-card"
+      title={`Name: ${habit.name}\nGoal: ${habit.goal}\nCategory: ${habit.category}\nHabit ID: ${habit.habit_id}\nCreated At: ${habit.created_at}\nUpdated At: ${habit.updated_at || 'N/A'}\nStreak: ${habit.streak}\nLast Completed: ${habit.last_completed || 'N/A'}`}
+    >
       <div className="habit-card-header">
         <div>
           <div className="habit-name">{habit.name}</div>
           <div className="habit-category">{habit.category}</div>
         </div>
         <div className="habit-card-header-buttons">
+          <div className="streak-circle" title="Current streak">{currentStreak}</div>
           <button className="add-event-button" onClick={handleCreateEvent}>+</button>
           <button className="delete-habit-button" onClick={handleDeleteHabit}>-</button>
         </div>
@@ -64,7 +68,7 @@ const HabitCard = ({ habit, personId, setLogMessages, onEventCreated, onDeleteHa
           <div
             key={event.event_id || event._id || idx}
             className="event-dot"
-            title={new Date(event.timestamp).toLocaleString()}
+            title={`Event ID: ${event.event_id || event._id || idx}\nPerson ID: ${event.person_id}\nHabit ID: ${event.habit_id}\nTimestamp: ${event.timestamp}\nNotes: ${event.notes || ''}\nStatus: ${event.status}`}
           ></div>
         ))}
       </div>

@@ -16,8 +16,10 @@ class HabitService:
         for habit in existing_habits:
             if habit.name.strip().lower() == name.strip().lower():
                 raise ValueError(f"Person already has a habit named '{name}'.")
+            
         if not habit_id:
             habit_id = uuid4()
+            
         habit = Habit(person_id=person_id, name=name, goal=goal, category=category, habit_id=habit_id)
         return self.habit_repo.save(habit)
 
