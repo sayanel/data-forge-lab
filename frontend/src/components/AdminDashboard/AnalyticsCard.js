@@ -8,26 +8,24 @@ const AnalyticsCard = ({ personId }) => {
     completionRates: [],
     consistency: 0,
     habitDistribution: {},
-    habitCorrelations: []
+    habitCorrelations: [],
+    timeHeatmap: {}
   });
 
   const fetchAnalytics = async () => {
     try {
-      const [streaksResponse, completionResponse, consistencyResponse, 
-             distributionResponse, correlationsResponse] = await Promise.all([
-        axios.get(`http://localhost:5000/api/analytics/persons/${personId}/streaks`),
-        axios.get(`http://localhost:5000/api/analytics/persons/${personId}/completion-rates`),
-        axios.get(`http://localhost:5000/api/analytics/persons/${personId}/consistency`),
-        axios.get(`http://localhost:5000/api/analytics/persons/${personId}/distribution`),
-        axios.get(`http://localhost:5000/api/analytics/persons/${personId}/correlations`)
+      const [completionResponse, consistencyResponse, distributionResponse, heatmapResponse] = await Promise.all([
+        axios.get(`http://localhost:5000/api/analytics/completion-rates?person_id=${personId}`),
+        axios.get(`http://localhost:5000/api/analytics/consistency?person_id=${personId}`),
+        axios.get(`http://localhost:5000/api/analytics/distribution?person_id=${personId}`),
+        axios.get(`http://localhost:5000/api/analytics/time-heatmap?person_id=${personId}`)
       ]);
 
       setAnalytics({
-        streaks: streaksResponse.data,
         completionRates: completionResponse.data,
-        consistency: consistencyResponse.data.consistency_score,
+        consistency: consistencyResponse.data.consistency,
         habitDistribution: distributionResponse.data,
-        habitCorrelations: correlationsResponse.data
+        timeHeatmap: heatmapResponse.data
       });
     } catch (error) {
       console.error('Error fetching analytics:', error);
@@ -38,6 +36,8 @@ const AnalyticsCard = ({ personId }) => {
     fetchAnalytics();
   }, [personId]);
 
+  const maxCount = Math.max(...Object.values(analytics.timeHeatmap || {}));
+
   return (
     <div className="analytics-card">
       <h4>Analytics</h4>
@@ -45,23 +45,8 @@ const AnalyticsCard = ({ personId }) => {
       <div className="analytics-section">
         <h5>Consistency Score</h5>
         <div className="consistency-score">
-          {analytics.consistency.toFixed(2)}%
+          {(analytics.consistency ?? 0).toFixed(2)}%
         </div>
-      </div>
-
-      <div className="analytics-section">
-        <h5>Current Streaks</h5>
-        {analytics.streaks.length > 0 ? (
-          <ul>
-            {analytics.streaks.map((streak) => (
-              <li key={streak.habit_id}>
-                {streak.habit_name}: {streak.current_streak} days
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No active streaks</p>
-        )}
       </div>
 
       <div className="analytics-section">
@@ -70,7 +55,7 @@ const AnalyticsCard = ({ personId }) => {
           <ul>
             {analytics.completionRates.map((rate) => (
               <li key={rate.habit_id}>
-                {rate.habit_name}: {rate.completion_rate.toFixed(1)}%
+                {rate.habit_name}: {(rate.completion_rate ?? 0).toFixed(1)}%
               </li>
             ))}
           </ul>
@@ -92,6 +77,26 @@ const AnalyticsCard = ({ personId }) => {
         ) : (
           <p>No habit distribution data</p>
         )}
+      </div>
+
+      <div className="analytics-section">
+        <h5>Time of Day Heatmap</h5>
+        <div className="heatmap-row">
+          {analytics.timeHeatmap && Object.entries(analytics.timeHeatmap).map(([hour, count]) => (
+            <div
+              key={hour}
+              className="heatmap-cell"
+              title={`${hour}: ${count}`}
+              style={{
+                background: `rgba(33, 150, 243, ${Math.min(count / maxCount, 1) || 0.1})`,
+                color: count > (maxCount * 0.5) ? '#fff' : '#222'
+              }}
+            >
+              <span className="heatmap-hour">{hour}</span>
+              <span className="heatmap-count">{count}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

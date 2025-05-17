@@ -7,21 +7,22 @@ class AnalyticsUseCases:
     def __init__(self, analytics_service: AnalyticsService):
         self.analytics_service = analytics_service
 
-    def get_habit_streaks(self, person_id: Optional[UUID] = None) -> Dict[str, Any]:
-        """Get habit streaks for a specific person or all users."""
-        return self.analytics_service.get_habit_streaks(person_id)
-
     def get_completion_rates(self, person_id: Optional[UUID] = None) -> Dict[str, float]:
         """Get completion rates for a specific person or all users."""
         return self.analytics_service.get_completion_rates(person_id)
 
+    def get_consistency(self, person_id: Optional[UUID] = None):
+        return self.analytics_service.get_consistency(person_id)
+    
+    def get_distribution(self, person_id: Optional[UUID] = None):
+        return self.analytics_service.get_distribution(person_id)
+    
+    def get_habit_popularity(self):
+        return self.analytics_service.get_habit_popularity()
+    
     def get_time_of_day_heatmap(self, person_id: Optional[UUID] = None) -> Dict[str, int]:
         """Get time-of-day heatmap data for a specific person or all users."""
         return self.analytics_service.get_time_of_day_heatmap(person_id)
-
-    def get_most_least_completed_habits(self) -> Dict[str, Any]:
-        """Get globally most and least completed habits."""
-        return self.analytics_service.get_most_least_completed_habits()
 
     def get_drop_off_rates(self, days_threshold: int = 7) -> Dict[str, float]:
         """Get drop-off rates for habits after a specified number of days."""
@@ -38,3 +39,6 @@ class AnalyticsUseCases:
     def get_geographic_trends(self) -> Dict[str, Dict[str, int]]:
         """Get geographic trends for habits and users."""
         return self.analytics_service.get_geographic_trends() 
+
+    def get_category_distribution(self, person_id: Optional[UUID] = None):
+        return self.analytics_service.get_category_distribution(person_id)
