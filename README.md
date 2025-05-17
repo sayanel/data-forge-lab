@@ -1,15 +1,25 @@
-# data-forge-lab
+# ⚙️data-forge-lab
 DataForgeLab is an experimental platform designed to explore and master data engineering concepts. This project aims to simulate real-world data processing scenarios.
 This project is a personal data management and productivity tracker that allows users to log habits, events, and self-development metrics. It's built using Onion Architecture and a microservice-friendly design.
 
-# Tech Stack:
+# ⚠️ Disclaimer
+
+This project is currently **under active development** and serves primarily as a personal sandbox for experimentation and learning.
+
+- Many components are not production-ready.
+- The codebase may lack standard production features such as input validation, error handling, and security hardening.
+- Some architectural choices may evolve or be restructured.
+
+Feedback and contributions are welcome as the project matures!
+
+# 🚀 Tech Stack:
 - Frontend: React
 - Backend: Python (Flask)
 - Database: MongoDB (also supports in-memory repo)
 - Microservices: Go (notifications, analytics)
 - Messaging: Kafka (event publishing + consumption)
 
-# How to get started:
+# 🧰 How to get started:
 
 To get the project up and running, follow these steps:
 
@@ -49,14 +59,18 @@ To get the project up and running, follow these steps:
       - start_front.bat
       - start_microservices.bat (optional)
 
-# Key Concepts:
+---
+# 🧱 Project Architecture Overview
+
+
+## 🧠 Key Concepts:
 - Person: A user entity
 - Habit: A recurring activity
 - HabitEvent: A tracked occurrence of a habit
 - HabitEventCreatedMessage: A Kafka DTO published when a habit event is logged
 
     
-# Project Architecture Overview
+## 🗺️ Hierarchy
 This project is structured using a **clean, layered architecture** based on principles from **Onion** and **Hexagonal Architecture**. The goal is to keep the core logic independent from external concerns like databases, APIs, or frameworks, making the application modular, testable, and maintainable.
 
 - application/
@@ -72,9 +86,9 @@ This project is structured using a **clean, layered architecture** based on prin
     - repositories/ → interfaces for persistence (used by services)
 - microservices/
     - analytics, notifications, etc.
----
 
-## Folder Structure & Responsibilities
+
+## 🧭 Responsibilities
 
 ### `application/domain/models` - **Domain Models**
 
@@ -190,7 +204,7 @@ Independent microservices that listen to Kafka and perform specific actions like
 
 ---
 
-## Layer Interactions
+## 🔄 Layer Interactions
 
 **Key Design Principles:**
 
@@ -206,7 +220,7 @@ Independent microservices that listen to Kafka and perform specific actions like
 ---
 
 
-## Project Directory Structure
+## 📁 Project Directory Structure
 
 ```plaintext
 data_forge_lab/
@@ -253,12 +267,12 @@ data_forge_lab/
 └── venv/                 # Virtual environment
 ````
 
-# Kafka
+# 📬 Kafka
 Requirements:
 - WSL installed and working
 - Kafka downloaded and extracted inside ~/kafka/kafka_2.13-4.0.0 inside WSL
 - All commands assume Kafka default port localhost:9092
 Domain Services (domain/services)
+
+
 Purpose: Domain services contain the core business logic and rules of your application. They encapsulate behaviors that involve multiple domain entities or complex business processes that don't naturally fit within a single entity.
-
-
