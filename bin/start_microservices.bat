@@ -1,4 +1,4 @@
 @echo off
 title Go Microservices
-cd C:\Users\maximilien\Dev\data-forge-lab\microservices
+cd ..\microservices
 start cmd /k go run main.go 2

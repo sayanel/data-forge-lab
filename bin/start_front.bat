@@ -1,6 +1,6 @@
 @echo off
 title Front - React
-cd C:\Users\maximilien\Dev\data-forge-lab
+cd ..
 call venv\Scripts\activate
 cd frontend
 cmd /k npm start
