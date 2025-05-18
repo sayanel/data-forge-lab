@@ -25,15 +25,6 @@ class Habit:
     streak: int = 0
     last_completed: Optional[datetime] = None
 
-    def complete(self):
-        self.streak += 1
-        self.last_completed = datetime.now()
-        self.updated_at = datetime.now()
-
-    def miss(self):
-        self.streak = 0
-        self.updated_at = datetime.now()
-
     def update_goal(self, new_goal: str):
         self.goal = new_goal
         self.updated_at = datetime.now()

@@ -3,6 +3,7 @@ from typing import List, Optional
 from application.domain.models.event import HabitEvent, HabitEventCreatedMessage
 from interfaces.repositories.habit_event_repository import HabitEventRepository
 from interfaces.event_publisher import EventPublisher
+from datetime import datetime, timedelta
 
 
 class HabitEventService:
@@ -11,8 +12,10 @@ class HabitEventService:
         self.event_publisher = event_publisher
         self.habit_repo = habit_repo
 
-    def create_habit_event(self, person_id: UUID, habit_id: UUID, notes: Optional[str] = None) -> HabitEvent:
-        event = HabitEvent(person_id=person_id, habit_id=habit_id, notes=notes, status="completed")
+    def create_habit_event(self, person_id: UUID, habit_id: UUID, notes: Optional[str] = None, timestamp: Optional[datetime] = None) -> HabitEvent:
+        if timestamp is None:
+            timestamp = datetime.now()
+        event = HabitEvent(person_id=person_id, habit_id=habit_id, notes=notes, status="completed", timestamp=timestamp)
         saved = self.habit_event_repo.save(event)
 
         # Streak logic
@@ -21,7 +24,6 @@ class HabitEventService:
             if habit:
                 # Only update streak if event is completed
                 if getattr(event, 'status', None) == 'completed':
-                    from datetime import datetime, timedelta
                     today = event.timestamp.date()
                     last_completed = habit.last_completed.date() if habit.last_completed else None
                     if last_completed and (today - last_completed).days == 1:
