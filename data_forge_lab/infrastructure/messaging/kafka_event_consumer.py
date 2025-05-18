@@ -1,6 +1,7 @@
-from kafka import KafkaConsumer
 import json
 import logging
+
+from kafka import KafkaConsumer
 
 from application.domain.models.event import HabitEventCreatedMessage
 
@@ -36,7 +37,7 @@ class KafkaEventConsumer:
         event_type = event_data.get("type")
         payload = event_data.get("payload")
 
-        if event_type == "HabitEventCreated":
+        if event_type == "HabitEventCreatedMessage":
             self.process_habit_event_created(payload)
         else:
             logger.warning(f"Received unknown event type: {event_type}")
@@ -45,4 +46,3 @@ class KafkaEventConsumer:
         """Process a HabitEventCreatedMessage event."""
         message = HabitEventCreatedMessage(**payload)
         logger.info(f"[Kafka] HabitEventCreatedMessage received: {message}")
-        # Here you could add real logic: update stats, trigger notifications, etc.
