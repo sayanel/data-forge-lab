@@ -17,7 +17,7 @@ class HabitController:
         self.habit_blueprint.route('/habits', methods=['POST'])(self.create_habit)
         self.habit_blueprint.route('/habits/<uuid:habit_id>', methods=['PUT'])(self.update_habit)
         self.habit_blueprint.route('/habits/<uuid:habit_id>', methods=['GET'])(self.get_habit)
-        self.habit_blueprint.route('/persons/<uuid:person_id>/habits', methods=['GET'])(self.list_habits)
+        self.habit_blueprint.route('/persons/<uuid:person_id>/habits', strict_slashes=False, methods=['GET'])(self.list_habits)
         self.habit_blueprint.route('/habits/<uuid:habit_id>', methods=['DELETE'])(self.delete_habit)
 
     def create_habit(self):

@@ -20,9 +20,8 @@ class PersonController:
         self.person_blueprint.route('/persons/<uuid:person_id>', methods=['GET'])(self.get_person)
         self.person_blueprint.route('/persons/<uuid:person_id>', methods=['PUT'])(self.update_person)
         self.person_blueprint.route('/persons/<uuid:person_id>', methods=['DELETE'])(self.delete_person)
-        self.person_blueprint.route('/persons', methods=['GET'])(self.list_persons)
-        self.person_blueprint.route('/countries', methods=['GET'])(self.get_countries)
-
+        self.person_blueprint.route('/persons', strict_slashes=False, methods=['GET'])(self.list_persons)
+        self.person_blueprint.route('/persons/countries', strict_slashes=False, methods=['GET'])(self.get_countries)
 
     def create_person(self):
         created_persons = []

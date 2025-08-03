@@ -18,7 +18,7 @@ const PersonCard = ({ person, setLogMessages }) => {
 
   const fetchHabits = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/persons/${person.person_id}/habits`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/persons/${person.person_id}/habits`);
       setHabits(response.data);
       setLogMessages((prev) => [`Fetched ${response.data.length} habits for ${person.first_name}`, ...prev]);
     } catch (error) {
@@ -40,7 +40,7 @@ const PersonCard = ({ person, setLogMessages }) => {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/habits', newHabit);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/habits`, newHabit);
       setLogMessages((prev) => [`Habit "${randomHabit}" created for ${person.first_name}`, ...prev]);
       await fetchHabits(); // refresh after creation
     } catch (error) {
@@ -55,7 +55,7 @@ const PersonCard = ({ person, setLogMessages }) => {
 
   const handleDeleteHabit = async (habitId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/habits/${habitId}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/habits/${habitId}`);
       setLogMessages((prev) => [`Habit deleted`, ...prev]);
       await fetchHabits();
     } catch (error) {

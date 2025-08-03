@@ -24,7 +24,7 @@ const ServiceStatus = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/status');
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/system/status`);
         setStatus(res.data);
       } catch (e) {
         setStatus({ mongo: false, kafka: false, flask: false });

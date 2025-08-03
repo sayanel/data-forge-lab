@@ -15,10 +15,10 @@ const AnalyticsCard = ({ personId }) => {
   const fetchAnalytics = async () => {
     try {
       const [completionResponse, consistencyResponse, distributionResponse, heatmapResponse] = await Promise.all([
-        axios.get(`http://localhost:5000/api/analytics/completion-rates?person_id=${personId}`),
-        axios.get(`http://localhost:5000/api/analytics/consistency?person_id=${personId}`),
-        axios.get(`http://localhost:5000/api/analytics/distribution?person_id=${personId}`),
-        axios.get(`http://localhost:5000/api/analytics/time-heatmap?person_id=${personId}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/completion-rates?person_id=${personId}`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/consistency?person_id=${personId}`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/distribution?person_id=${personId}`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/time-heatmap?person_id=${personId}`)
       ]);
 
       setAnalytics({

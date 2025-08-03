@@ -7,7 +7,7 @@ const HabitCard = ({ habit, personId, setLogMessages, onEventCreated, onDeleteHa
 
   const fetchHabitEvents = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/habits/${habit.habit_id}/events`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/habits/${habit.habit_id}/events`);
       setEvents(res.data);
       setLogMessages((prev) => [`Fetched ${res.data.length} events for habit "${habit.name}"`, ...prev]);
     } catch (error) {
@@ -25,7 +25,7 @@ const HabitCard = ({ habit, personId, setLogMessages, onEventCreated, onDeleteHa
     };
 
     try {
-      await axios.post('http://localhost:5000/api/habit_events', newEvent);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/habit_events`, newEvent);
       setLogMessages((prev) => [`Event created for habit "${habit.name}"`, ...prev]);
       await fetchHabitEvents();
       if (onEventCreated) {

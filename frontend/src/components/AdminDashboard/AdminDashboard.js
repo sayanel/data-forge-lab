@@ -11,7 +11,7 @@ const AdminDashboard = ({ setLogMessages }) => {
 
   const fetchPersons = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/persons');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/persons`);
       setPersons(response.data);
     } catch (error) {
       setLogMessages((prev) => [`Error fetching persons: ${error}`, ...prev]);

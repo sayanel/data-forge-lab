@@ -19,7 +19,8 @@ const useFetchPersons = (setLogMessages) => {
 
   const fetchPersons = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/persons');
+      console.log("Calling API:", `${process.env.REACT_APP_API_URL}/api/persons`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/persons`);
       setPersons(response.data);
     } catch (error) {
       setLogMessages((prevMessages) => [`Error fetching Persons:', ${error}`, ...prevMessages]);
@@ -38,7 +39,7 @@ const useFetchHabits = (persons, setLogMessages) => {
 
   const fetchHabits = async (personId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/persons/${personId}/habits`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/persons/${personId}/habits`);
       setHabits((prevHabits) => ({
         ...prevHabits,
         [personId]: response.data,
@@ -51,7 +52,7 @@ const useFetchHabits = (persons, setLogMessages) => {
   const fetchAllHabits = async () => {
     const updatedHabits = {};
     for (const person of persons) {
-      const response = await axios.get(`http://localhost:5000/api/persons/${person.person_id}/habits`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/persons/${person.person_id}/habits`);
       updatedHabits[person.person_id] = response.data;
     }
     setHabits(updatedHabits);
@@ -69,7 +70,7 @@ const useFetchHabitEvents = (habits, setLogMessages) => {
 
   const fetchHabitEvents = async (habitId) => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/habits/${habitId}/events`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/habits/${habitId}/events`);
         setHabitEvents((prevEvents) => ({
           ...prevEvents,
           [habitId]: response.data,
@@ -83,7 +84,7 @@ const useFetchHabitEvents = (habits, setLogMessages) => {
     const updatedEvents = {};
     for (const personId in habits) {
       for (const habit of habits[personId]) {
-        const response = await axios.get(`http://localhost:5000/api/habits/${habit.habit_id}/events`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/habits/${habit.habit_id}/events`);
         updatedEvents[habit.habit_id] = response.data;
       }
     }
@@ -119,7 +120,7 @@ const PersonHabitDashboard = ({ setLogMessages }) => {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/habits', newHabit);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/habits`, newHabit);
       
       setLogMessages((prevMessages) => [`Habit "${randomHabit}" created for person with ID ${personId}`, ...prevMessages]);
 
@@ -140,7 +141,7 @@ const PersonHabitDashboard = ({ setLogMessages }) => {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/habit_events', newEvent);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/habit_events`, newEvent);
 
       setLogMessages((prevMessages) => [`Habit event created for habit ID ${habitId}`, ...prevMessages]);
 

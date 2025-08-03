@@ -20,15 +20,15 @@ const GlobalAnalytics = () => {
       const [consistencyResponse, distributionResponse, 
              categoryResponse, habitPopularityResponse,
              dropOffResponse, firstWeekResponse, engagementResponse, geoTrendsResponse, timeHeatmapResponse] = await Promise.all([
-        axios.get('http://localhost:5000/api/analytics/consistency'),
-        axios.get('http://localhost:5000/api/analytics/distribution'),
-        axios.get('http://localhost:5000/api/analytics/category-distribution'),
-        axios.get('http://localhost:5000/api/analytics/habit-popularity'),
-        axios.get('http://localhost:5000/api/analytics/drop-off-rates'),
-        axios.get('http://localhost:5000/api/analytics/first-week-success'),
-        axios.get('http://localhost:5000/api/analytics/engagement'),
-        axios.get('http://localhost:5000/api/analytics/geographic-trends'),
-        axios.get('http://localhost:5000/api/analytics/time-heatmap')
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/consistency`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/distribution`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/category-distribution`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/habit-popularity`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/drop-off-rates`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/first-week-success`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/engagement`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/geographic-trends`),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/analytics/time-heatmap`)
       ]);
 
       setAnalytics({

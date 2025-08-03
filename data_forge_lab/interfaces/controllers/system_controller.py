@@ -9,7 +9,7 @@ class SystemController:
         self.person_repo = person_repo
         self.event_publisher = event_publisher
         self.system_blueprint = Blueprint('system', __name__)
-        self.system_blueprint.route('/status', methods=['GET'])(self.get_status)
+        self.system_blueprint.route('/system/status', strict_slashes=False, methods=['GET'])(self.get_status)
 
     def get_status(self):
         """Health check for MongoDB, Kafka, and Flask."""

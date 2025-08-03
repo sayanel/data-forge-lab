@@ -19,7 +19,7 @@ class HabitEventController:
         self.habit_event_blueprint.route('/habit_events/<uuid:event_id>', methods=['GET'])(self.get_habit_event)
         self.habit_event_blueprint.route('/habit_events/<uuid:event_id>', methods=['PUT'])(self.update_habit_event)
         self.habit_event_blueprint.route('/habit_events/<uuid:event_id>', methods=['DELETE'])(self.delete_habit_event)
-        self.habit_event_blueprint.route('/habits/<uuid:habit_id>/events', methods=['GET'])(self.list_habit_events)
+        self.habit_event_blueprint.route('/habits/<uuid:habit_id>/events', strict_slashes=False, methods=['GET'])(self.list_habit_events)
 
     def create_habit_event(self):
         logger.info("create habit event")

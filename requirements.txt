@@ -8,3 +8,6 @@ dependency_injector-4.46.0
 kafka-python-2.1.5
 requests
 faker
+httpx
+uvicorn
+fastapi

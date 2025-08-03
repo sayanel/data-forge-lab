@@ -11,7 +11,7 @@ const PersonGenerator = ({ setLogMessages, onGenerateComplete }) => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/countries');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/persons/countries`);
                 setAvailableCountries(response.data);
             } catch (error) {
                 setLogMessages((prevMessages) => [`Error fetching countries: ${error}`, ...prevMessages]);
@@ -47,7 +47,7 @@ const PersonGenerator = ({ setLogMessages, onGenerateComplete }) => {
 
       // Send the generated persons to the backend API
       try {
-          await axios.post('http://localhost:5000/api/persons', persons);
+          await axios.post(`${process.env.REACT_APP_API_URL}/api/persons`, persons);
           setLogMessages((prevMessages) => [`${numberOfPersons} Persons successfully added to the database!`, ...prevMessages]);
           if (onGenerateComplete) onGenerateComplete(); // trigger refresh
       } catch (error) {
