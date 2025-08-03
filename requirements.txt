@@ -11,3 +11,4 @@ faker
 httpx
 uvicorn
 fastapi
+redis
