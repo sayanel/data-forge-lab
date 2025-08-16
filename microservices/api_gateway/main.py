@@ -1,20 +1,28 @@
+import json
 import httpx
-import redis
+from redis.asyncio import Redis
 from typing import Optional
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import JSONResponse, Response, PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+
+CACHE_TTL = 120  # seconds
+CACHEABLE_SERVICES = {"persons", "habits", "habit_events"}
 
 RATE_LIMIT = 20  # requests
 RATE_WINDOW = 1  # second
 
-
-redis_client = redis.Redis(host="localhost", port=6379, db=0)
-
-
 app = FastAPI(title="Data Forge Lab Gateway")
+redis_client = Redis(host="localhost", port=6379, db=0)
+httpx_client = httpx.AsyncClient(timeout=10.0)
+
+
+@app.on_event("startup")
+async def startup_event():
+    global httpx_client
+    httpx_client = httpx.AsyncClient(timeout=10.0)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,43 +56,42 @@ async def proxy(service: str, request: Request, path: Optional[str] = ""):
     if query_params:
         target_url += f"?{query_params}"
 
-    print(f"Proxying to: {target_url}")
+    try:
+        response = await httpx_client.request(
+            method=request.method,
+            url=target_url,
+            headers=dict(request.headers),
+            content=await request.body(),
+        )
 
-    method = request.method
-    headers = dict(request.headers)
-    body = await request.body()
+        return Response(
+            content=response.content,
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            media_type=response.headers.get("content-type"),
+        )
 
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.request(
-                method=method,
-                url=target_url,
-                headers=headers,
-                content=body,
-                timeout=10.0
-            )
-            return JSONResponse(status_code=response.status_code, content=response.json())
-        except httpx.RequestError as e:
-            return JSONResponse(status_code=500, content={"error": str(e)})
+    except httpx.RequestError as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
 
 
 @app.middleware("http")
 async def redis_rate_limiter(request: Request, call_next):
-    client_ip = request.client.host
-    key = f"rate_limit: {client_ip}"
+    # Use X-Forwarded-For if behind a proxy, otherwise fall back to client.host
+    client_ip = request.headers.get("X-Forwarded-For", request.client.host)
+    key = f"rate_limit:{client_ip}"
 
     try:
-        current_count = redis_client.incr(key)
+        # Async incr and expire
+        current_count = await redis_client.incr(key)
         if current_count == 1:
-            redis_client.expire(key, RATE_WINDOW)
-
+            await redis_client.expire(key, RATE_WINDOW)
         if current_count > RATE_LIMIT:
+            print(f"[Rate limit] Exceeded for IP: {client_ip}")
             return PlainTextResponse("Too many requests", status_code=429)
+    except Exception as e:
+        print(f"[Rate limit] Error for IP {client_ip}: {e}")
 
-    except redis.RedisError as e:
-        print(f"Redis error: {e}")
-        # Let the request through on Redis failure
-        pass
-
+    # Proceed to the next middleware/route
     response = await call_next(request)
     return response
